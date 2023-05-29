@@ -9,7 +9,7 @@ var tentativas = 0;
 var numeroQuadroText;
 var distancia = 0;
 var escalaPT = 2250700;
-var escalaBR = 4000000;
+var escalaBR = 20548000;
 var escalaCV = 1540000;
 var escala = escalaPT/100000;
 
@@ -30,7 +30,7 @@ const cidadesCaboVerde = [["Porto Novo", 137.44, 315.2], ["Ribeira Grande", 137.
                          ["Sal Rei", 830.7, 600.6], ["Vila do Maio", 734.74, 948.94], ["Praia", 637.6, 1022.1], ["Mosteiros", 373.7, 983.7], ["Vila Nova Sintra", 251.5, 1037]];
 
 
-var c1 = Phaser.Math.Between(0, 17);
+var c1 = Phaser.Math.Between(0, 16);
 var c2 = Phaser.Math.Between(0, 17);
 var pais = 0;
 var repPt = 1;
@@ -115,7 +115,21 @@ class Scene2 extends Phaser.Scene {
         this.rLetra = this.add.text(0.5 * game.config.width, 0.35*game.config.height,'R:', { fontFamily: 'font1', fontSize: 40, fill: 'white', stroke: 'black', strokeThickness: 1});
         this.kmLetra = this.add.text(0.756 * game.config.width, 0.35*game.config.height,'Km', { fontFamily: 'font1', fontSize: 40, fill: 'white', stroke: 'black', strokeThickness: 1});
         let resposta = `<input type="text" maxlength="6" id="resposta" name="resposta" style="font-size: 15px;font-family:'font1';text-align:center;">`;
-        this.caixaResp = this.add.dom(0.53 * game.config.width, 0.35 * game.config.height).createFromHTML(resposta).setScale(2).setOrigin(0,0);
+        var caixaResp = this.add.rexInputText(0.53 * game.config.width, 0.35 * game.config.height, 220, 25, {
+            type: 'text',
+            fontSize: '15px',
+            color: 'black',
+            maxLength: '6',
+            fontFamily: 'font1',
+            border: 0.1,
+            borderColor: 'black',
+            backgroundColor: 'white',
+            align: 'center',
+        }).setScale(2).setOrigin(0,0).on('focus', function(caixaDeResposta){
+            game.input.keyboard.enabled = false;
+        }).on('blur', function(caixaDeResposta){
+            game.input.keyboard.enabled = true;
+        });
 
 
         this.errado = this.add.image(0.81 * game.config.width, 0.37 *game.config.height, 'btErrado').setScale(0.4);
@@ -234,7 +248,7 @@ class Scene2 extends Phaser.Scene {
         });
         this.star2.setCollisionGroup(-1);
 
-        numeroQuadroText = this.add.text(950, 1130, '', { fontFamily: 'font1', fontSize: '32px', fill: 'white' });
+        numeroQuadroText = this.add.text(0.6*game.config.width, 0.93*game.config.height, '', { fontFamily: 'font1', fontSize: '37px', fill: 'white' });
         numeroQuadroText.visible = false;
 
         const tween = this.add.tween({
@@ -306,7 +320,7 @@ class Scene2 extends Phaser.Scene {
             target = Phaser.Math.Angle.BetweenPoints(regua,pointer);
         });
         this.input.on('pointerdown', function(pointer) {
-            document.getElementById("resposta").blur();
+            caixaResp.setBlur();
             if(pointer.rightButtonDown() &&  rodarRegua){
                 rodar = true;
             }
@@ -329,27 +343,27 @@ class Scene2 extends Phaser.Scene {
             switch (gameObject.name) {
                 case 'btAvancar':
                     tentativas = 0;
-                    this.caixaResp.visible = false;
-                    this.scene.stop();
+                    caixaResp.visible = false;
+                    this.scene.shutdown();
                     this.scene.transition({ target: 'playGame2', duration: 100 });
                     break;
 
                 case 'btHome':
-                    this.scene.stop();
+                    tentativas = 0;
+                    this.scene.shutdown();
                     this.scene.transition({ target: 'NoMenu', duration: 100 });
                     this.btHome.disableInteractive();
-                    tentativas = 0;
                     break;
 
                 case 'btVerificar':
-                    let resposta = this.caixaResp.getChildByName("resposta").value;
+                    let resposta = caixaResp.text;
 
                     if (Math.abs((distancia*(escala))-resposta) <= (0.3*escala)){
                         this.parabens.visible = true;
                         this.btVerificar.visible = false;
                     }
                     else{
-                        this.caixaResp.getChildByName("resposta").value = '';
+                        caixaResp.text = '';
                         tentativas += 1;
                         if(tentativas == 3){
                             this.corrigir.visible = true;
@@ -361,11 +375,12 @@ class Scene2 extends Phaser.Scene {
 
                 case 'btRefresh':
                     tentativas = 0;
+                    this.btVerificar.visible = true;
                     this.parabens.visible = false;
                     this.corrigir.visible = false;
                     this.corrigirBox.visible = false;
                     this.corrigirText.visible = false;
-                    this.caixaResp.getChildByName("resposta").value = '';
+                    caixaResp.text = '';
                     regua.setX(0.472*game.config.width);
                     regua.setY(0.87*game.config.height);
                     regua.angle = 0;
@@ -393,7 +408,7 @@ class Scene2 extends Phaser.Scene {
                             this.escalaTextCV.visible = false;
                             this.escalaTextCV.visible = false;
                             this.caboVerde.visible = false;
-                            c1 = Phaser.Math.Between(0, 17);
+                            c1 = Phaser.Math.Between(0, 16);
                             c2 = Phaser.Math.Between(0, 17);
                             if(c1 == 0 || c1 == 1 || c1 == 2 || c1 == 3){
                                 c2 = Phaser.Math.Between(0, 16);
@@ -426,7 +441,7 @@ class Scene2 extends Phaser.Scene {
                             this.escalaTextCV.visible = false;
                             this.escalaTextCV.visible = false;
                             this.caboVerde.visible = false;
-                            c1 = Phaser.Math.Between(0, 14);
+                            c1 = Phaser.Math.Between(0, 13);
                             c2 = Phaser.Math.Between(0, 14);
                             if(c1 == c2) c2 += 1;
                             this.star1.setX(cidadesBrasil[c1][1]);
@@ -453,7 +468,7 @@ class Scene2 extends Phaser.Scene {
                             this.escalaTextCV.visible = true;
                             this.escalaTextCV.visible = true;
                             this.caboVerde.visible = true;
-                            c1 = Phaser.Math.Between(0, 9);
+                            c1 = Phaser.Math.Between(0, 8);
                             c2 = Phaser.Math.Between(0, 9);
                             if(c1 == c2) c2 += 1;
                             this.star1.setX(cidadesCaboVerde[c1][1]);
@@ -498,15 +513,15 @@ class Scene2 extends Phaser.Scene {
         }, this);
 
         this.input.keyboard.on('keydown-ENTER', event =>{
-            let resposta = this.caixaResp.getChildByName("resposta").value;
+            let resposta = caixaResp.text;
 
             if (Math.abs((distancia*(escala))-resposta) <= (0.3*escala)){
-                this.caixaResp.getChildByName("resposta").value = '';
+                caixaResp.text = '';
                 this.parabens.visible = true;
                 this.timer =  this.time.delayedCall(2000, this.onEvent, [], this);
             }
             else{
-                this.caixaResp.getChildByName("resposta").value = '';
+                caixaResp.text = '';
                 tentativas += 1;
                 if(tentativas == 3){
                     this.corrigir.visible = true;

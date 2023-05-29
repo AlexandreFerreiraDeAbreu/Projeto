@@ -27,7 +27,6 @@ class Scene3 extends Phaser.Scene {
         this.load.image('btRefresh', 'assets/images/btRefresh.png');
         this.load.image('btErrado', 'assets/images/btfechar.png');
         this.load.image('btCorrigir', 'assets/images/btCorrigir.png');
-        this.load.plugin('rexinputtextplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexinputtextplugin.min.js', true);
 	}
 
 	create(){
@@ -237,7 +236,11 @@ class Scene3 extends Phaser.Scene {
             borderColor: 'black',
             align: 'center',
         })
-            .setOrigin(0,0);
+            .setOrigin(0,0).on('focus', function(inputText1){
+                game.input.keyboard.enabled = false;
+            }).on('blur', function(inputText1){
+                game.input.keyboard.enabled = true;
+            });
         var inputText2 = this.add.rexInputText(0.5 * game.config.width+70, 0.6 * game.config.height-70, 200, 40, {
             type: 'text',
             fontSize: '30px',
@@ -248,7 +251,11 @@ class Scene3 extends Phaser.Scene {
             borderColor: 'black',
             align: 'center',
         })
-            .setOrigin(0,0);
+            .setOrigin(0,0).on('focus', function(inputText2){
+                game.input.keyboard.enabled = false;
+            }).on('blur', function(inputText2){
+                game.input.keyboard.enabled = true;
+            });
         var inputText3 = this.add.rexInputText(0.5 * game.config.width+70, 0.6 * game.config.height+30, 200, 40, {
             type: 'text',
             fontSize: '30px',
@@ -259,7 +266,11 @@ class Scene3 extends Phaser.Scene {
             borderColor: 'black',
             align: 'center',
         })
-            .setOrigin(0,0);
+            .setOrigin(0,0).on('focus', function(inputText3){
+                game.input.keyboard.enabled = false;
+            }).on('blur', function(inputText3){
+                game.input.keyboard.enabled = true;
+            });
         var inputText4 = this.add.rexInputText(0.5 * game.config.width+70, 0.6 * game.config.height+130, 200, 40, {
             type: 'text',
             fontSize: '30px',
@@ -270,7 +281,11 @@ class Scene3 extends Phaser.Scene {
             borderColor: 'black',
             align: 'center',
         })
-            .setOrigin(0,0);
+            .setOrigin(0,0).on('focus', function(inputText4){
+                game.input.keyboard.enabled = false;
+            }).on('blur', function(inputText4){
+                game.input.keyboard.enabled = true;
+            });
         var inputText5 = this.add.rexInputText(0.5 * game.config.width+70, 0.6 * game.config.height+230, 200, 40, {
             type: 'text',
             fontSize: '30px',
@@ -281,7 +296,11 @@ class Scene3 extends Phaser.Scene {
             borderColor: 'black',
             align: 'center',
         })
-            .setOrigin(0,0);
+            .setOrigin(0,0).on('focus', function(inputText5){
+                game.input.keyboard.enabled = false;
+            }).on('blur', function(inputText5){
+                game.input.keyboard.enabled = true;
+            });
 
 
         this.input.on('pointerdown', function () {
@@ -331,6 +350,7 @@ class Scene3 extends Phaser.Scene {
                     tentativas3 = 0;
                     tentativas4 = 0;
                     tentativas5 = 0;
+                    this.scene.shutdown();
                     this.scene.transition({ target: 'playGame', duration: 100 });
                     break;
                 case 'btAvancar':
@@ -339,6 +359,7 @@ class Scene3 extends Phaser.Scene {
                     tentativas3 = 0;
                     tentativas4 = 0;
                     tentativas5 = 0;
+                    this.scene.shutdown();
                     this.scene.transition({ target: 'playGame3', duration: 100 });
                     break;
 
@@ -348,80 +369,108 @@ class Scene3 extends Phaser.Scene {
                     tentativas3 = 0;
                     tentativas4 = 0;
                     tentativas5 = 0;
-                    stop = true; 
+                    this.scene.shutdown();
                     this.scene.transition({ target: 'NoMenu', duration: 100 });
-                    this.btHome.disableInteractive();
-                    tentativas = 0;
                     break;
                 case 'btCorrigir1':
-                    this.corrigirBox1.visible = true;
-                    this.corrigirText1.visible = true;
-                    this.corrigirText1.setText(' Proposta de correção 1\n\n'+perguntaValorkm+' km = ' +perguntaValorkm*100000+' cm\n\n1 cm ------>5 000\nX ------> '+perguntaValorkm*100000+'\n\n X = '
-                        +perguntaValorkm*100000+' / 5000\n\n Resposta = '+Phaser.Math.RoundTo((perguntaValorkm*20),0)+' cm\n');
-                    this.corrigirBox2.visible = false;
-                    this.corrigirText2.visible = false;
-                    this.corrigirBox3.visible = false;
-                    this.corrigirText3.visible = false;
-                    this.corrigirBox4.visible = false;
-                    this.corrigirText4.visible = false;
-                    this.corrigirBox5.visible = false;
-                    this.corrigirText5.visible = false;
+                    if(this.corrigirBox1.visible){
+                        this.corrigirBox1.visible = false;
+                        this.corrigirText1.visible = false; 
+                    }
+                    else{
+                        this.corrigirBox1.visible = true;
+                        this.corrigirText1.visible = true;
+                        this.corrigirText1.setText(' Proposta de correção 1\n\n'+perguntaValorkm+' km = ' +perguntaValorkm*100000+' cm\n\n1 cm ------>5 000\nX ------> '+perguntaValorkm*100000+'\n\nX = '
+                            +perguntaValorkm*100000+' / 5000\n\nResposta = '+Phaser.Math.RoundTo((perguntaValorkm*20),0)+' cm\n');
+                        this.corrigirBox2.visible = false;
+                        this.corrigirText2.visible = false;
+                        this.corrigirBox3.visible = false;
+                        this.corrigirText3.visible = false;
+                        this.corrigirBox4.visible = false;
+                        this.corrigirText4.visible = false;
+                        this.corrigirBox5.visible = false;
+                        this.corrigirText5.visible = false;
+                    }
                     break;
                 case 'btCorrigir2':
-                    this.corrigirBox2.visible = true;
-                    this.corrigirText2.visible = true;
-                    this.corrigirText2.setText(' Proposta de correção 2\n\n'+perguntaValorkm+' km = ' +perguntaValorkm*100000+' cm\n\n1 cm ------>10 000\nX ------> '+perguntaValorkm*100000+'\n\n X = '
-                        +perguntaValorkm*100000+' / 10000\n\n Resposta = '+Phaser.Math.RoundTo((perguntaValorkm*10),0)+' cm\n');
-                    this.corrigirBox1.visible = false;
-                    this.corrigirText1.visible = false;
-                    this.corrigirBox3.visible = false;
-                    this.corrigirText3.visible = false;
-                    this.corrigirBox4.visible = false;
-                    this.corrigirText4.visible = false;
-                    this.corrigirBox5.visible = false;
-                    this.corrigirText5.visible = false;
+                    if(this.corrigirBox2.visible){
+                        this.corrigirBox2.visible = false;
+                        this.corrigirText2.visible = false;
+                    }
+                    else{
+                        this.corrigirBox2.visible = true;
+                        this.corrigirText2.visible = true;
+                        this.corrigirText2.setText(' Proposta de correção 2\n\n'+perguntaValorkm+' km = ' +perguntaValorkm*100000+' cm\n\n1 cm ------>10 000\nX ------> '+perguntaValorkm*100000+'\n\nX = '
+                            +perguntaValorkm*100000+' / 10000\n\nResposta = '+Phaser.Math.RoundTo((perguntaValorkm*10),0)+' cm\n');
+                        this.corrigirBox1.visible = false;
+                        this.corrigirText1.visible = false;
+                        this.corrigirBox3.visible = false;
+                        this.corrigirText3.visible = false;
+                        this.corrigirBox4.visible = false;
+                        this.corrigirText4.visible = false;
+                        this.corrigirBox5.visible = false;
+                        this.corrigirText5.visible = false;
+                    }
                     break;
                 case 'btCorrigir3':
-                    this.corrigirBox3.visible = true;
-                    this.corrigirText3.visible = true;
-                    this.corrigirText3.setText(' Proposta de correção 3\n\n'+perguntaValorkm+' km = ' +perguntaValorkm*100000+' cm\n\n1 cm ------>25 000\nX ------> '+perguntaValorkm*100000+'\n\n X = '
-                        +perguntaValorkm*100000+' / 25000\n\n Resposta = '+Phaser.Math.RoundTo((perguntaValorkm*4),0)+' cm\n');
-                    this.corrigirBox2.visible = false;
-                    this.corrigirText2.visible = false;
-                    this.corrigirBox1.visible = false;
-                    this.corrigirText1.visible = false;
-                    this.corrigirBox4.visible = false;
-                    this.corrigirText4.visible = false;
-                    this.corrigirBox5.visible = false;
-                    this.corrigirText5.visible = false;
+                    if(this.corrigirBox3.visible){
+                        this.corrigirBox3.visible = false;
+                        this.corrigirText3.visible = false;
+                    }
+                    else{
+                        this.corrigirBox3.visible = true;
+                        this.corrigirText3.visible = true;
+                        this.corrigirText3.setText(' Proposta de correção 3\n\n'+perguntaValorkm+' km = ' +perguntaValorkm*100000+' cm\n\n1 cm ------>25 000\nX ------> '+perguntaValorkm*100000+'\n\nX = '
+                            +perguntaValorkm*100000+' / 25000\n\nResposta = '+Phaser.Math.RoundTo((perguntaValorkm*4),0)+' cm\n');
+                        this.corrigirBox2.visible = false;
+                        this.corrigirText2.visible = false;
+                        this.corrigirBox1.visible = false;
+                        this.corrigirText1.visible = false;
+                        this.corrigirBox4.visible = false;
+                        this.corrigirText4.visible = false;
+                        this.corrigirBox5.visible = false;
+                        this.corrigirText5.visible = false;
+                    }
                     break;
                 case 'btCorrigir4':
-                    this.corrigirBox4.visible = true;
-                    this.corrigirText4.visible = true;
-                    this.corrigirText4.setText(' Proposta de correção 4\n\n'+perguntaValorkm+' km = ' +perguntaValorkm*100000+' cm\n\n1 cm ------>50 000\nX ------> '+perguntaValorkm*100000+'\n\n X = '
-                        +perguntaValorkm*100000+' / 50000\n\n Resposta = '+Phaser.Math.RoundTo((perguntaValorkm*2),0)+' cm\n');
-                    this.corrigirBox2.visible = false;
-                    this.corrigirText2.visible = false;
-                    this.corrigirBox3.visible = false;
-                    this.corrigirText3.visible = false;
-                    this.corrigirBox1.visible = false;
-                    this.corrigirText1.visible = false;
-                    this.corrigirBox5.visible = false;
-                    this.corrigirText5.visible = false;
+                    if(this.corrigirBox4.visible){
+                        this.corrigirBox4.visible = false;
+                        this.corrigirText4.visible = false;
+                    }
+                    else{
+                        this.corrigirBox4.visible = true;
+                        this.corrigirText4.visible = true;
+                        this.corrigirText4.setText(' Proposta de correção 4\n\n'+perguntaValorkm+' km = ' +perguntaValorkm*100000+' cm\n\n1 cm ------>50 000\nX ------> '+perguntaValorkm*100000+'\n\nX = '
+                            +perguntaValorkm*100000+' / 50000\n\nResposta = '+Phaser.Math.RoundTo((perguntaValorkm*2),0)+' cm\n');
+                        this.corrigirBox2.visible = false;
+                        this.corrigirText2.visible = false;
+                        this.corrigirBox3.visible = false;
+                        this.corrigirText3.visible = false;
+                        this.corrigirBox1.visible = false;
+                        this.corrigirText1.visible = false;
+                        this.corrigirBox5.visible = false;
+                        this.corrigirText5.visible = false;
+                    }
                     break;
                 case 'btCorrigir5':
-                    this.corrigirBox5.visible = true;
-                    this.corrigirText5.visible = true;
-                    this.corrigirText5.setText(' Proposta de correção 5\n\n'+perguntaValorkm+' km = ' +perguntaValorkm*100000+' cm\n\n1 cm ------>100 000\nX ------> '+perguntaValorkm*100000+'\n\n X = '
-                        +perguntaValorkm*100000+' / 100000\n\n Resposta = '+perguntaValorkm+' cm\n');
-                    this.corrigirBox2.visible = false;
-                    this.corrigirText2.visible = false;
-                    this.corrigirBox3.visible = false;
-                    this.corrigirText3.visible = false;
-                    this.corrigirBox4.visible = false;
-                    this.corrigirText4.visible = false;
-                    this.corrigirBox1.visible = false;
-                    this.corrigirText1.visible = false;
+                    if(this.corrigirBox5.visible){
+                        this.corrigirBox5.visible = false;
+                        this.corrigirText5.visible = false;
+                    }
+                    else{
+                        this.corrigirBox5.visible = true;
+                        this.corrigirText5.visible = true;
+                        this.corrigirText5.setText(' Proposta de correção 5\n\n'+perguntaValorkm+' km = ' +perguntaValorkm*100000+' cm\n\n1 cm ------>100 000\nX ------> '+perguntaValorkm*100000+'\n\nX = '
+                            +perguntaValorkm*100000+' / 100000\n\nResposta = '+perguntaValorkm+' cm\n');
+                        this.corrigirBox2.visible = false;
+                        this.corrigirText2.visible = false;
+                        this.corrigirBox3.visible = false;
+                        this.corrigirText3.visible = false;
+                        this.corrigirBox4.visible = false;
+                        this.corrigirText4.visible = false;
+                        this.corrigirBox1.visible = false;
+                        this.corrigirText1.visible = false;
+                    }
                     break;
                 case 'btRefresh':
                     perguntaValorkm = Phaser.Math.Between(2, 21);
@@ -446,6 +495,16 @@ class Scene3 extends Phaser.Scene {
                     this.corrigirFalso3.visible = false;
                     this.corrigirFalso4.visible = false;
                     this.corrigirFalso5.visible = false;
+                    this.corrigirBox2.visible = false;
+                    this.corrigirText2.visible = false;
+                    this.corrigirBox3.visible = false;
+                    this.corrigirText3.visible = false;
+                    this.corrigirBox1.visible = false;
+                    this.corrigirText1.visible = false;
+                    this.corrigirBox5.visible = false;
+                    this.corrigirText5.visible = false;
+                    this.corrigirBox4.visible = false;
+                    this.corrigirText4.visible = false;
                     inputText1.text = '';
                     inputText2.text = '';
                     inputText3.text = '';
@@ -533,6 +592,3 @@ class Scene3 extends Phaser.Scene {
     update(){
     }
 }
-
-
-    

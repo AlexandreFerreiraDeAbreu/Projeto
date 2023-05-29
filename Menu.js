@@ -21,6 +21,7 @@ class Menu extends Phaser.Scene {
         this.load.image('btLogin', 'assets/images/btLogin.png');
         this.load.image('btFullScreen', 'assets/images/btFullScreen.png');
         this.load.image('btExitFullScreen', 'assets/images/btExitFullScreen.png');
+        this.load.plugin('rexinputtextplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexinputtextplugin.min.js', true);
 	}
 
 	create(){
@@ -215,12 +216,14 @@ class Menu extends Phaser.Scene {
         this.input.on('gameobjectdown', function(pointer, gameObject) {
             switch (gameObject.name) {
                 case 'btplay':
+                    this.scene.shutdown();
                     this.scene.transition({ target: 'playGame', duration: 100 });
                     this.btplay.disableInteractive();
                     this.btInfo.disableInteractive();
                     this.btFullScreen.disableInteractive();
                     break;
                 case 'btInfo':
+                    this.scene.shutdown();
                     this.scene.transition({ target: 'Slides', duration: 100 });
                     this.btplay.disableInteractive();
                     this.btInfo.disableInteractive();
