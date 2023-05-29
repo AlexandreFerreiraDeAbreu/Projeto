@@ -1,7 +1,3 @@
-var cidade1 = Phaser.Math.Between(0, 16);
-var cidade2 = Phaser.Math.Between(0, 17);
-if(cidade1 == cidade2) cidade2+=1;
-
 class Scene5 extends Phaser.Scene {
     
 	constructor(){
@@ -32,6 +28,18 @@ class Scene5 extends Phaser.Scene {
 
 
 	create(){    
+        var nDica = 1;
+        const dicas = ['No menu inicial podes encontrar um botão que te informa sobre escalas!',
+                       'Podes arrastar a régua para te ajudar a medir as distâncias.',
+                       'No computador, podes usar o botão direito do rato ou as setas do\nteclado para rodar a régua.',
+                       'No telemóvel ou no tablet, podes usar dois dedos para rodar a régua.',
+                       'Se acertares a pergunta, podes clicar no botão ao lado das dicas\npara ter uma nova pergunta.',
+                       'Se estiveres com dificuldades em acertar a resposta, podes usar o\nbotão de ajuda para veres uma possível resolução.',
+                       'Antes de usares a ajuda tenta resolver por ti próprio, não há \nlimite de tentativas!'];
+        var cidade1 = Phaser.Math.Between(0, 16);
+        var cidade2 = Phaser.Math.Between(0, 17);
+        if(cidade1 == cidade2) cidade2+=1;
+
 		this.background3 = this.add.image(0.5 * game.config.width, 0.5 *game.config.height, 'background3');
         this.background3.setScale(1.5);
 
@@ -47,11 +55,9 @@ class Scene5 extends Phaser.Scene {
 
         this.boxVerde = this.add.image(0.4*game.config.width, 0.13*game.config.height, 'boxVerde1').setOrigin(0,0).setScale(0.94,1);
         
-        this.tarefa1 = this.add.text(0.41*game.config.width,0.15*game.config.height,'Tarefa 1:', {
+        this.tarefa1 = this.add.text(0.41*game.config.width,0.15*game.config.height,'Tarefa 4:', {
              fontFamily: 'font1', fontSize: 30, fill: 'black', stroke: 'black', strokeThickness: 1});
 
-        
-        if(c1 == c2) c2+=1;
             
         this.tarefaText = this.add.text(0.41*game.config.width,0.2*game.config.height,'',   { 
             fontFamily: 'font1', fontSize: 22, fill: 'black', stroke: 'black', strokeThickness: 0.3});
@@ -121,7 +127,7 @@ class Scene5 extends Phaser.Scene {
             this.btVerificar.setScale(0.6);
         });
 
-        this.corrigirFalso = this.add.sprite(0.67*game.config.width, 0.45*game.config.height, 'btCorrigir').setScale(0.6);
+        this.corrigirFalso = this.add.image(0.67*game.config.width, 0.45*game.config.height, 'btCorrigir').setScale(0.6);
         this.corrigirFalso.name = 'btCorrigirFalso';
         this.corrigirFalso.setTint(0x787878);
 
@@ -180,6 +186,24 @@ class Scene5 extends Phaser.Scene {
             this.btRetroceder.setScale(0.5);
         });
         this.btRetroceder.flipX = true;
+
+        this.dicaBox = this.add.image(0.5*game.config.width, 0.02*game.config.height, 'boxVerde1').setOrigin(0,0).setScale(0.77,0.8);
+        //this.dicaBox.setTint(0xC9CC3F);
+        this.dicaTitulo = this.add.text(0.505*game.config.width,0.03*game.config.height,'Dica:', {
+            fontFamily: 'font1', fontSize: 28, fill: 'black', stroke: 'black', strokeThickness: 1});
+        this.dicaText = this.add.text(0.51*game.config.width,0.06*game.config.height,'No menu inicial podes encontrar um botão que te informa sobre escalas!', {
+            fontFamily: 'font1', fontSize: 21, fill: 'black', stroke: 'black', strokeThickness: 0.2});
+        this.dicaNext = this.add.sprite(0.935 * game.config.width, 0.09 *game.config.height, "btAvancar").setScale(0.3).setInteractive({ useHandCursor: true });
+        this.dicaNext.name = 'btDicaNext';
+        this.dicaPrev = this.add.sprite(0.909 * game.config.width, 0.09 *game.config.height, "btAvancar").setScale(0.3).setInteractive({ useHandCursor: true });
+        this.dicaPrev.name = 'btDicaPrev';
+        this.dicaPrev.flipX = true;
+
+        this.dicaBox.visible = false;
+        this.dicaTitulo.visible = false;
+        this.dicaText.visible = false;
+        this.dicaNext.visible = false;
+        this.dicaPrev.visible = false;
 
         this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
             
@@ -311,6 +335,37 @@ class Scene5 extends Phaser.Scene {
                     this.scene.transition({ target: 'playGame3', duration: 100 });
                     break;
 
+                case 'btInfo':
+                    if(this.dicaBox.visible){
+                        this.dicaBox.visible = false;
+                        this.dicaTitulo.visible = false;
+                        this.dicaText.visible = false;
+                        this.dicaNext.visible = false;
+                        this.dicaPrev.visible = false;
+                    }
+                    else{
+                        this.dicaBox.visible = true;
+                        this.dicaTitulo.visible = true;
+                        this.dicaText.visible = true;
+                        this.dicaNext.visible = true;
+                        if(nDica>=2){
+                            this.dicaPrev.visible = true;
+                        }
+                    }
+                    break;
+                case 'btDicaNext':
+                    nDica += 1;
+                    this.dicaPrev.visible = true;
+                    if(nDica == 7) this.dicaNext.visible = false;
+                    this.dicaText.setText(dicas[nDica-1])
+                    break;
+                case 'btDicaPrev':
+                    nDica -= 1;
+                    this.dicaNext.visible = true;
+                    if(nDica == 1) this.dicaPrev.visible = false;
+                    this.dicaText.setText(dicas[nDica-1])
+                    break;
+
                 case 'btVerificar':
                     let resposta = caixaDeResposta.text;
 
@@ -387,7 +442,7 @@ class Scene5 extends Phaser.Scene {
                             tween.restart();
                             distancia = Phaser.Math.RoundTo(Phaser.Math.Distance.Between(this.star1.x, this.star1.y, cidadesPortugal[cidade2][1], cidadesPortugal[cidade2][2])/43.4506, -1);
                             this.tarefaText.setText('No mapa estão assinaladas as 18 capitais de distrito de Portugal Continental. \nEncontra a cidade que está a '
-                            + Phaser.Math.RoundTo(distancia*22.507,0)+ ' km  de distância de ' +cidadesPortugal[cidade1][0] + '.');
+                            + Phaser.Math.RoundTo(distancia*22.507,0)+ ' km de distância de ' +cidadesPortugal[cidade1][0] + '.');
                             break;
                     
                         case 2:
@@ -412,7 +467,7 @@ class Scene5 extends Phaser.Scene {
                             tween.restart();
                             distancia = Phaser.Math.RoundTo(Phaser.Math.Distance.Between(this.star1.x, this.star1.y, cidadesBrasil[cidade2][1], cidadesBrasil[cidade2][2])/43.4506, -1);
                             this.tarefaText.setText('No mapa estão assinalados alguns dos 26 estados do Brasil. \nEncontra a cidade que está a '
-                            + Phaser.Math.RoundTo(distancia*205.48,0)+ ' km  de distância de ' +cidadesBrasil[cidade1][0] + '.');
+                            + Phaser.Math.RoundTo(distancia*205.48,0)+ ' km de distância de ' +cidadesBrasil[cidade1][0] + '.');
                             break;
 
                         case 3:
@@ -437,7 +492,7 @@ class Scene5 extends Phaser.Scene {
                             tween.restart();
                             distancia = Phaser.Math.RoundTo(Phaser.Math.Distance.Between(this.star1.x, this.star1.y, cidadesCaboVerde[cidade2][1], cidadesCaboVerde[cidade2][2])/43.4506, -1);
                             this.tarefaText.setText('No mapa estão assinaladas 15 cidades nas várias ilhas de Cabo verde. \nEncontra a cidade que está a '
-                            + Phaser.Math.RoundTo(distancia*15.4,0)+ ' km  de distância de ' +cidadesCaboVerde[cidade1][0] + '.');
+                            + Phaser.Math.RoundTo(distancia*15.4,0)+ ' km de distância de ' +cidadesCaboVerde[cidade1][0] + '.');
                             break;
 
                         default:

@@ -37,7 +37,7 @@ class Scene4 extends Phaser.Scene {
         this.boxVerde = this.add.image(0.1*game.config.width, 0.1*game.config.height, 'boxVerde').setOrigin(0,0).setScale(1.01,1);
 
         const g1 = this.add.grid(0.5*game.config.width, 0.6*game.config.height, 800, 600, 400, 100, 0xFFFFFF, 0.9);
-        g1.setAltFillStyle( 0xF0F0F0 , 0.9);
+        g1.setAltFillStyle(0xF0F0F0 , 0.9);
         const g2 = this.add.grid(0.5*game.config.width, 0.6*game.config.height-250, 800, 100, 400, 100, 0x50C878, 0.8);
 
 
@@ -53,19 +53,19 @@ class Scene4 extends Phaser.Scene {
         this.errado5.visible = false;
 
 
-        this.corrigirFalso1 = this.add.sprite(0.77*game.config.width, 0.6*game.config.height-150, 'btCorrigir').setScale(0.55);
+        this.corrigirFalso1 = this.add.image(0.77*game.config.width, 0.6*game.config.height-150, 'btCorrigir').setScale(0.55);
         this.corrigirFalso1.name = 'btCorrigirFalso';
         this.corrigirFalso1.setTint(0x787878);
-        this.corrigirFalso2 = this.add.sprite(0.77*game.config.width, 0.6*game.config.height-50, 'btCorrigir').setScale(0.55);
+        this.corrigirFalso2 = this.add.image(0.77*game.config.width, 0.6*game.config.height-50, 'btCorrigir').setScale(0.55);
         this.corrigirFalso2.name = 'btCorrigirFalso';
         this.corrigirFalso2.setTint(0x787878);
-        this.corrigirFalso3 = this.add.sprite(0.77*game.config.width, 0.6*game.config.height+50, 'btCorrigir').setScale(0.55);
+        this.corrigirFalso3 = this.add.image(0.77*game.config.width, 0.6*game.config.height+50, 'btCorrigir').setScale(0.55);
         this.corrigirFalso3.name = 'btCorrigirFalso';
         this.corrigirFalso3.setTint(0x787878);
-        this.corrigirFalso4 = this.add.sprite(0.77*game.config.width, 0.6*game.config.height+150, 'btCorrigir').setScale(0.55);
+        this.corrigirFalso4 = this.add.image(0.77*game.config.width, 0.6*game.config.height+150, 'btCorrigir').setScale(0.55);
         this.corrigirFalso4.name = 'btCorrigirFalso';
         this.corrigirFalso4.setTint(0x787878);
-        this.corrigirFalso5 = this.add.sprite(0.77*game.config.width, 0.6*game.config.height+250, 'btCorrigir').setScale(0.55);
+        this.corrigirFalso5 = this.add.image(0.77*game.config.width, 0.6*game.config.height+250, 'btCorrigir').setScale(0.55);
         this.corrigirFalso5.name = 'btCorrigirFalso';
         this.corrigirFalso5.setTint(0x787878);
         this.corrigirFalso1.visible = false;

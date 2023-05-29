@@ -79,7 +79,7 @@ class Scene3 extends Phaser.Scene {
         this.corrigirFalso5.visible = false;
 
 
-        this.corrigir1 = this.add.sprite(0.77*game.config.width, 0.6*game.config.height-150, 'btCorrigir').setInteractive({ useHandCursor: true }).setScale(0.55);
+        this.corrigir1 = this.add.image(0.77*game.config.width, 0.6*game.config.height-150, 'btCorrigir').setInteractive({ useHandCursor: true }).setScale(0.55);
         this.corrigir1.name = 'btCorrigir1';
         this.corrigir1.on('pointerover', () => {
             this.corrigir1.setScale(0.58);
@@ -88,7 +88,7 @@ class Scene3 extends Phaser.Scene {
             this.corrigir1.setScale(0.55);
         });
         this.corrigir1.visible = false;
-        this.corrigir2 = this.add.sprite(0.77*game.config.width, 0.6*game.config.height-50, 'btCorrigir').setInteractive({ useHandCursor: true }).setScale(0.55);
+        this.corrigir2 = this.add.image(0.77*game.config.width, 0.6*game.config.height-50, 'btCorrigir').setInteractive({ useHandCursor: true }).setScale(0.55);
         this.corrigir2.name = 'btCorrigir2';
         this.corrigir2.on('pointerover', () => {
             this.corrigir2.setScale(0.58);
@@ -97,7 +97,7 @@ class Scene3 extends Phaser.Scene {
             this.corrigir2.setScale(0.55);
         });
         this.corrigir2.visible = false;
-        this.corrigir3 = this.add.sprite(0.77*game.config.width, 0.6*game.config.height+50, 'btCorrigir').setInteractive({ useHandCursor: true }).setScale(0.55);
+        this.corrigir3 = this.add.image(0.77*game.config.width, 0.6*game.config.height+50, 'btCorrigir').setInteractive({ useHandCursor: true }).setScale(0.55);
         this.corrigir3.name = 'btCorrigir3';
         this.corrigir3.on('pointerover', () => {
             this.corrigir3.setScale(0.58);
@@ -106,7 +106,7 @@ class Scene3 extends Phaser.Scene {
             this.corrigirFalso3.setScale(0.55);
         });
         this.corrigir3.visible = false;
-        this.corrigir4 = this.add.sprite(0.77*game.config.width, 0.6*game.config.height+150, 'btCorrigir').setInteractive({ useHandCursor: true }).setScale(0.55);
+        this.corrigir4 = this.add.image(0.77*game.config.width, 0.6*game.config.height+150, 'btCorrigir').setInteractive({ useHandCursor: true }).setScale(0.55);
         this.corrigir4.name = 'btCorrigir4';
         this.corrigir4.on('pointerover', () => {
             this.corrigir4.setScale(0.58);
@@ -115,7 +115,7 @@ class Scene3 extends Phaser.Scene {
             this.corrigir4.setScale(0.55);
         });
         this.corrigir4.visible = false;
-        this.corrigir5 = this.add.sprite(0.77*game.config.width, 0.6*game.config.height+250, 'btCorrigir').setInteractive({ useHandCursor: true }).setScale(0.55);
+        this.corrigir5 = this.add.image(0.77*game.config.width, 0.6*game.config.height+250, 'btCorrigir').setInteractive({ useHandCursor: true }).setScale(0.55);
         this.corrigir5.name = 'btCorrigir5';
         this.corrigir5.on('pointerover', () => {
             this.corrigir5.setScale(0.58);
@@ -518,6 +518,16 @@ class Scene3 extends Phaser.Scene {
                     tentativas5 = 0;
                     break;
                 case 'btVerificar':
+                    this.corrigirBox2.visible = false;
+                    this.corrigirText2.visible = false;
+                    this.corrigirBox3.visible = false;
+                    this.corrigirText3.visible = false;
+                    this.corrigirBox1.visible = false;
+                    this.corrigirText1.visible = false;
+                    this.corrigirBox5.visible = false;
+                    this.corrigirText5.visible = false;
+                    this.corrigirBox4.visible = false;
+                    this.corrigirText4.visible = false;
                     if(inputText1.text != perguntaValorkm/escala1Valor1){
                         tentativas1+=1;
                         this.errado1.visible = true;
